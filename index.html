@@ -59,6 +59,11 @@
         <script src = 'lib/d3.v6.1.1/d3.min.js'></script>
         <script>
           
+// Read data
+            var data = d3.csv('data/covid_impact_on_airport_traffic.csv', genType, function(error, data)) {
+              if (error) throw error;
+            }
+          
             // Variables
             var body = d3.select('body')
             var margin = { top: 200, right: 200, bottom: 200, left: 200 }
@@ -81,10 +86,7 @@
             var xAxis = d3.axisBottom(x)
             // Y-axis
             var yAxis = d3.axisLeft(y)
-            // Read data
-            d3.csv('data/covid_impact_on_airport_traffic.csv', genType, function(error, data)) {
-              if (error) throw error;
-            }
+            
 
             //Scalable Vectors
             var svg = d3.select("body").append("svg")
