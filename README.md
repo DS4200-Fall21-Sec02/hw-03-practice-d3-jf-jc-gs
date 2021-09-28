@@ -2,7 +2,7 @@
 
 This repository is your starting point for Task 3 in hw-03. Assignment details and instructions are below. 
 
-Link to your GitHub pages website: `[insert your *clickable* hyperlink here]`
+Link to your GitHub pages website: https://ds4200-fall21-sec02.github.io/hw-03-practice-d3-jf-jc-gs/
 
 # Aim of the assignment
 
