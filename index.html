@@ -63,14 +63,14 @@
             var data = d3.csv('data/covid_impact_on_airport_traffic.csv', genType, function(error, data)) {
               if (error) throw error;
             }
-          
+
             // Variables
             var body = d3.select('body')
             var margin = { top: 200, right: 200, bottom: 200, left: 200 }
             var h = 960*2 - margin.top - margin.bottom
             var w = 500*2 - margin.left - margin.right
             // Scales
-            var xScale = d3.scaleTime()
+            var xScale = d3.scale.linear()
               .domain([
                 d3.min([0,d3.min(data,function (d) { return d.Date })]),
                 d3.max([0,d3.max(data,function (d) { return d.Date })])
