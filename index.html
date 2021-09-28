@@ -63,16 +63,13 @@
       <body>
         <script>
           
-          d3.csv('data/covid_impact_on_airport_traffic.csv', function (data) {
             // Variables
             var body = d3.select('body')
-            var margin = { top: 50, right: 50, bottom: 50, left: 50 }
-            var h = 500 - margin.top - margin.bottom
-            var w = 500 - margin.left - margin.right
-            var formatPercent = d3.format('.2%')
+            var margin = { top: 200, right: 200, bottom: 200, left: 200 }
+            var h = 960*2 - margin.top - margin.bottom
+            var w = 500*2 - margin.left - margin.right
             // Scales
-            var colorScale = d3.scale.category20()
-            var xScale = d3.scale.linear()
+            var xScale = d3.scaleTime()
               .domain([
                 d3.min([0,d3.min(data,function (d) { return d.Date })]),
                 d3.max([0,d3.max(data,function (d) { return d.Date })])
@@ -84,78 +81,36 @@
                 d3.max([0,d3.max(data,function (d) { return d.PercentOfBaseline })])
                 ])
               .range([h,0])
-            // SVG
-            var svg = body.append('svg')
-                .attr('height',h + margin.top + margin.bottom)
-                .attr('width',w + margin.left + margin.right)
-              .append('g')
-                .attr('transform','translate(' + margin.left + ',' + margin.top + ')')
             // X-axis
-            var xAxis = d3.svg.axis()
-              .scale(xScale)
-              .tickFormat(formatPercent)
-              .ticks(5)
-              .orient('bottom')
+            var xAxis = d3.axisBottom(x)
             // Y-axis
-            var yAxis = d3.svg.axis()
-              .scale(yScale)
-              .tickFormat(formatPercent)
-              .ticks(5)
-              .orient('left')
-            // Circles
-            var circles = svg.selectAll('circle')
-                .data(data)
-                .enter()
-              .append('circle')
-                .attr('cx',function (d) { return xScale(d.Date) })
-                .attr('cy',function (d) { return yScale(d.PercentOfBaseline) })
-                .attr('r','10')
-                .attr('stroke','black')
-                .attr('stroke-width',1)
-                .attr('fill',function (d,i) { return colorScale(i) })
-                .on('mouseover', function () {
-                  d3.select(this)
-                    .transition()
-                    .duration(500)
-                    .attr('r',20)
-                    .attr('stroke-width',3)
-                })
-                .on('mouseout', function () {
-                  d3.select(this)
-                    .transition()
-                    .duration(500)
-                    .attr('r',10)
-                    .attr('stroke-width',1)
-                })
-              .append('title') // Tooltip
-                .text(function (d) { return d.variable +
-                                     '\nReturn: ' + formatPercent(d.PercentOfBaseline) +
-                                     '\nStd. Dev.: ' + formatPercent(d.Date) })
-            // X-axis
-            svg.append('g')
-                .attr('class','axis')
-                .attr('transform', 'translate(0,' + h + ')')
-                .call(xAxis)
-              .append('text') // X-axis Label
-                .attr('class','label')
-                .attr('y',-10)
-                .attr('x',w)
-                .attr('dy','.71em')
-                .style('text-anchor','end')
-                .text('Date')
-            // Y-axis
-            svg.append('g')
-                .attr('class', 'axis')
-                .call(yAxis)
-              .append('text') // y-axis Label
-                .attr('class','label')
-                .attr('transform','rotate(-90)')
-                .attr('x',0)
-                .attr('y',5)
-                .attr('dy','.71em')
-                .style('text-anchor','end')
-                .text('PercentOfBaseline')
-          })  
+            var yAxis = d3.axisLeft(y)
+            // Read data
+            d3.csv('data/covid_impact_on_airport_traffic.csv', genType, function(error, data)) {
+              if (error) throw error;
+            }
+
+            //Scalable Vectors
+            var svg = d3.select("body").append("svg")
+            .attr("width", w + margin.left + margin.right)
+            .attr("height", h + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            svg.selectAll(".dot")
+            .data(data)
+            .enter().append("circle")
+            .attr("class", "dot")
+            .attr("r", 3.5)
+            .attr("cx", function(d) {return x(d.Date)})
+            .attr("cy", function(d) {return y(d.PercentOfBaseline)});
+
+            svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate(-50," + (height/2)+")rotate(-90)")
+            .text("Percent of Baseline");
+
+            
 
         </script>
 
