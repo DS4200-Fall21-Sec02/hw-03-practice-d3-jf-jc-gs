@@ -54,17 +54,15 @@
 
     <!-- Visualization goes here -->
     <div class='vis-holder' id='vis1'>
-
-      <body>
-<!--Step 2-->
-<svg width="500" height="400"></svg>
-<script>
+      
+<!-- Import D3 from github -->
+        <script src = 'lib/d3.v6.1.1/d3.min.js'></script>
+        <body>
+        <svg width="500" height="400"></svg>
+        <script>
+    
         // Step 1
-        var dataset1 = [
-        [90, 20], [20, 100], [66, 44],
-        [53, 80], [24, 182], [80, 72],
-        [10, 76], [33, 150], [100, 15]
-        ];
+         d3.csv('data/covid_impact_on_airport_traffic.csv');
 
         // Step 3
         var svg = d3.select("svg"),
@@ -74,7 +72,7 @@
 
         // Step 4 
         var xScale = d3.scaleLinear().domain([0, 100]).range([0, width]),
-            yScale = d3.scaleLinear().domain([0, 200]).range([height, 0]);
+            yScale = d3.scaleLinear().domain([0, 5]).range([height, 0]);
             
         var g = svg.append("g")
             .attr("transform", "translate(" + 100 + "," + 100 + ")");
@@ -117,77 +115,18 @@
         // Step 7
         svg.append('g')
         .selectAll("dot")
-        .data(dataset1)
         .enter()
         .append("circle")
-        .attr("cx", function (d) { return xScale(d[0]); } )
-        .attr("cy", function (d) { return yScale(d[1]); } )
+        .attr("cx", function (d) { return xScale(d.PercentOfBaseline); } )
+        .attr("cy", function (d) { return yScale(d.Version); } )
         .attr("r", 2)
         .attr("transform", "translate(" + 100 + "," + 100 + ")")
         .style("fill", "#CC0000");
-  
-</script>
-</body>
-      
-<!-- Import D3 from github -->
-        <script src = 'lib/d3.v6.1.1/d3.min.js'></script>
-        <script>
-          
-// Read data
-            var data = d3.csv('data/covid_impact_on_airport_traffic.csv', genType, function(error, data)) {
-              if (error) throw error;
-            }
-
-            // Variables
-            var body = d3.select('body')
-            var margin = { top: 200, right: 200, bottom: 200, left: 200 }
-            var h = 960*2 - margin.top - margin.bottom
-            var w = 500*2 - margin.left - margin.right
-            // Scales
-            var xScale = d3.scale.linear()
-              .domain([
-                d3.min([0,d3.min(data,function (d) { return d.Date })]),
-                d3.max([0,d3.max(data,function (d) { return d.Date })])
-                ])
-              .range([0,w])
-            var yScale = d3.scale.linear()
-              .domain([
-                d3.min([0,d3.min(data,function (d) { return d.PercentOfBaseline })]),
-                d3.max([0,d3.max(data,function (d) { return d.PercentOfBaseline })])
-                ])
-              .range([h,0])
-            // X-axis
-            var xAxis = d3.axisBottom(x)
-            // Y-axis
-            var yAxis = d3.axisLeft(y)
-            
-
-            //Scalable Vectors
-            var svg = d3.select("body").append("svg")
-            .attr("width", w + margin.left + margin.right)
-            .attr("height", h + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            svg.selectAll(".dot")
-            .data(data)
-            .enter().append("circle")
-            .attr("class", "dot")
-            .attr("r", 3.5)
-            .attr("cx", function(d) {return x(d.Date)})
-            .attr("cy", function(d) {return y(d.PercentOfBaseline)});
-
-            svg.append("text")
-            .attr("text-anchor", "middle")
-            .attr("transform", "translate(-50," + (height/2)+")rotate(-90)")
-            .text("Percent of Baseline");
-
+    
 
 
         </script>
-
-
-
+      </body>
     </div>
       
 
