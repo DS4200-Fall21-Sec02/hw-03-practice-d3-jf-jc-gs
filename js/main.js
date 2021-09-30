@@ -43,7 +43,7 @@ let data1 = d3.csv('data/covid_impact_on_airport_traffic.csv', function(row) {
 
   // add y axis to SVG
   svg1.append("g")
-  .attr("transform", "translate(" + margin.left + ",10)")
+  .attr("transform", "translate(" + margin.left + ",30)")
   .call(d3.axisLeft(yScale));
 
   // create X axis
@@ -53,7 +53,7 @@ let data1 = d3.csv('data/covid_impact_on_airport_traffic.csv', function(row) {
 
   // add x axis to SVG
   svg1.append("g")
-    .attr("transform", "translate(" + margin.left + "," + (height + 10) + ")")
+    .attr("transform", "translate(" + margin.left + "," + (height + 30) + ")")
     .call(d3.axisBottom(xScale));
 
   //create popup with information
@@ -71,7 +71,7 @@ let data1 = d3.csv('data/covid_impact_on_airport_traffic.csv', function(row) {
         .enter()
         .append("circle")
         .attr("cx", function (d) { return margin.left + xScale(d.date); } )
-        .attr("cy", function (d) { return 10+yScale(d.PercentOfBaseline); } )
+        .attr("cy", function (d) { return 30+yScale(d.PercentOfBaseline); } )
         .attr("r", 2)
         .style("fill", "#CC0000")
         //add interactivity to show values
@@ -113,7 +113,7 @@ svg1.append('g')
   .text('Percent of Baseline Flights');
 
 // reset label locations
-var labelY = height + margin.top;
+var labelY = height + margin.top + 10;
 var labelX = width / 2 + margin.left;
 
 // x label
@@ -123,7 +123,23 @@ svg1.append('g')
   .attr('text-anchor', 'middle')
   .text('Date (2020)');
 
+// reset label locations
+var labelY = 20
+var labelX = width / 2 + margin.left;
+
+svg1.append('g')
+  .attr('transform', 'translate(' + labelX + ',' + labelY + ")")
+  .append('text')
+  .attr('text-anchor', 'middle')
+  .text('Flights in Pandemic as % of Pre-Pandemic Levels')
+  .style('text-decoration', 'underline');
+
+
+
+
 });
+
+
 
 // second visualization
 // Acknowledgement: code is created through the study of the following website:
@@ -215,6 +231,18 @@ let svg2 = d3.select('#vis2')
       .append('text')
       .attr('text-anchor', 'middle')
       .text('Fiscal Period');
+
+    // set label parameters
+    var labelY = margin.top - 15;
+    var labelX = width / 4 + margin.left + 15;
+
+    // add label to SVG
+    svg2.append('g')
+      .attr('transform', 'translate(' + labelX + ',' + labelY + ")")
+      .append('text')
+      .attr('text-anchor', 'middle')
+      .text('Revenues by Branch (2021)')
+      .style('text-decoration', 'underline');
 
     // add legend
     var lineLegend = svg2.selectAll(".lineLegend").data(subgroups)
